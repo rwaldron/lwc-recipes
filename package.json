@@ -6,6 +6,8 @@
     "scripts": {
         "lint": "eslint **/{lwc,aura}/**/*.js",
         "test": "npm run test:unit",
+        "test:jest": "jest",
+        "test:locker": "node preJest.js --lockerOn=true",
         "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
         "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
         "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
@@ -33,8 +35,12 @@
         "url": "git+https://github.com/trailheadapps/lwc-recipes"
     },
     "devDependencies": {
+        "@locker/rollup-plugin": "^0.16.17",
         "@lwc/eslint-plugin-lwc": "^1.1.1",
+        "@lwc/rollup-plugin": "2.20.0",
         "@prettier/plugin-xml": "^1.2.0",
+        "@rollup/plugin-node-resolve": "13.0.5",
+        "@rollup/plugin-replace": "4.0.0",
         "@sa11y/jest": "^3.1.0",
         "@salesforce/eslint-config-lwc": "^3.2.1",
         "@salesforce/eslint-plugin-aura": "^2.0.0",
@@ -46,12 +52,24 @@
         "eslint-plugin-jest": "^26.1.1",
         "husky": "^7.0.4",
         "jest-canvas-mock": "^2.3.1",
+        "karma": "6.3.17",
+        "karma-chrome-launcher": "3.1.1",
+        "karma-firefox-launcher": "2.1.2",
+        "karma-jasmine": "4.0.1",
+        "karma-node-resolve-preprocessor": "0.2.2",
+        "karma-rollup-preprocessor": "7.0.7",
         "lint-staged": "^12.3.4",
+        "lwc": "2.20.0",
         "prettier": "^2.5.1",
-        "prettier-plugin-apex": "^1.10.0"
+        "prettier-plugin-apex": "^1.10.0",
+        "rollup": "^2.75.5",
+        "rollup-jest": "^2.0.0"
     },
     "volta": {
         "node": "14.17.3",
         "npm": "6.14.13"
+    },
+    "dependencies": {
+        "yargs-unparser": "^2.0.0"
     }
 }
