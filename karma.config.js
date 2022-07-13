@@ -7,151 +7,358 @@ const replaceRollupPlugin = require('@rollup/plugin-replace');
 
 const basePath = __dirname;
 
+const patter = /^@salesforce\/apex$/;
+const bundleIgnore =
+    '/node_modules/(?!(.*@salesforce/sfdx-lwc-jest/src/lightning-stubs)/)';
+
 const bundleReplacements = {
     'c/apexImperativeMethod': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexImperativeMethod'
+        './force-app/main/default/lwc/apexImperativeMethod/apexImperativeMethod'
     ),
     'c/apexImperativeMethodWithComplexParams': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexImperativeMethodWithComplexParams'
+        './force-app/main/default/lwc/apexImperativeMethodWithComplexParams/apexImperativeMethodWithComplexParams'
     ),
     'c/apexWireMethodToFunction': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexWireMethodToFunction'
+        './force-app/main/default/lwc/apexWireMethodToFunction/apexWireMethodToFunction'
     ),
     'c/apexImperativeMethodWithParams': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexImperativeMethodWithParams'
+        './force-app/main/default/lwc/apexImperativeMethodWithParams/apexImperativeMethodWithParams'
     ),
     'c/apexWireMethodWithParams': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexWireMethodWithParams'
+        './force-app/main/default/lwc/apexWireMethodWithParams/apexWireMethodWithParams'
     ),
     'c/apexWireMethodWithParams': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexWireMethodWithParams'
+        './force-app/main/default/lwc/apexWireMethodWithParams/apexWireMethodWithParams'
     ),
     'c/apexStaticSchema': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexStaticSchema'
+        './force-app/main/default/lwc/apexStaticSchema/apexStaticSchema'
     ),
     'c/apexWireMethodWithComplexParams': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexWireMethodWithComplexParams'
+        './force-app/main/default/lwc/apexWireMethodWithComplexParams/apexWireMethodWithComplexParams'
     ),
     'c/apiProperty': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apiProperty'
+        './force-app/main/default/lwc/apiProperty/apiProperty'
     ),
     'c/apexWireMethodToProperty': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apexWireMethodToProperty'
+        './force-app/main/default/lwc/apexWireMethodToProperty/apexWireMethodToProperty'
     ),
     'c/apiMethod': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apiMethod'
+        './force-app/main/default/lwc/apiMethod/apiMethod'
     ),
-    'c/clock': path.resolve(basePath, './force-app/main/default/lwc/clock'),
+    'c/clock': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/clock/clock'
+    ),
     'c/categoryFilter': path.resolve(
         basePath,
-        './force-app/main/default/lwc/categoryFilter'
+        './force-app/main/default/lwc/categoryFilter/categoryFilter'
     ),
     'c/apiSetterGetter': path.resolve(
         basePath,
-        './force-app/main/default/lwc/apiSetterGetter'
+        './force-app/main/default/lwc/apiSetterGetter/apiSetterGetter'
     ),
     'c/compositionBasics': path.resolve(
         basePath,
-        './force-app/main/default/lwc/compositionBasics'
+        './force-app/main/default/lwc/compositionBasics/compositionBasics'
     ),
     'c/chartBar': path.resolve(
         basePath,
-        './force-app/main/default/lwc/chartBar'
+        './force-app/main/default/lwc/chartBar/chartBar'
     ),
     'c/compositionIteration': path.resolve(
         basePath,
-        './force-app/main/default/lwc/compositionIteration'
+        './force-app/main/default/lwc/compositionIteration/compositionIteration'
     ),
     'c/compositionContactSearch': path.resolve(
         basePath,
-        './force-app/main/default/lwc/compositionContactSearch'
+        './force-app/main/default/lwc/compositionContactSearch/compositionContactSearch'
     ),
     'c/compositionWithAppBuilder': path.resolve(
         basePath,
-        './force-app/main/default/lwc/compositionWithAppBuilder'
+        './force-app/main/default/lwc/compositionWithAppBuilder/compositionWithAppBuilder'
     ),
     'c/contactInfo': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactInfo'
+        './force-app/main/default/lwc/contactInfo/contactInfo'
     ),
     'c/contactListItem': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactListItem'
+        './force-app/main/default/lwc/contactListItem/contactListItem'
     ),
     'c/contactList': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactList'
+        './force-app/main/default/lwc/contactList/contactList'
     ),
     'c/contactListItemBubbling': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactListItemBubbling'
+        './force-app/main/default/lwc/contactListItemBubbling/contactListItemBubbling'
     ),
     'c/contactTile': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactTile'
+        './force-app/main/default/lwc/contactTile/contactTile'
     ),
     'c/contactSelector': path.resolve(
         basePath,
-        './force-app/main/default/lwc/contactSelector'
+        './force-app/main/default/lwc/contactSelector/contactSelector'
     ),
     'c/datatableCustomDataType': path.resolve(
         basePath,
-        './force-app/main/default/lwc/datatableCustomDataType'
+        './force-app/main/default/lwc/datatableCustomDataType/datatableCustomDataType'
     ),
     'c/datatableInlineEditWithApex': path.resolve(
         basePath,
-        './force-app/main/default/lwc/datatableInlineEditWithApex'
+        './force-app/main/default/lwc/datatableInlineEditWithApex/datatableInlineEditWithApex'
     ),
     'c/eventBubbling': path.resolve(
         basePath,
-        './force-app/main/default/lwc/eventBubbling'
+        './force-app/main/default/lwc/eventBubbling/eventBubbling'
     ),
     'c/datatableInlineEditWithUiApi': path.resolve(
         basePath,
-        './force-app/main/default/lwc/datatableInlineEditWithUiApi'
+        './force-app/main/default/lwc/datatableInlineEditWithUiApi/datatableInlineEditWithUiApi'
     ),
     'c/errorPanel': path.resolve(
         basePath,
-        './force-app/main/default/lwc/errorPanel'
+        './force-app/main/default/lwc/errorPanel/errorPanel'
     ),
-    'c/hello': path.resolve(basePath, './force-app/main/default/lwc/hello'),
+    'c/hello': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/hello/hello'
+    ),
     'c/helloConditionalRendering': path.resolve(
         basePath,
-        './force-app/main/default/lwc/helloConditionalRendering'
+        './force-app/main/default/lwc/helloConditionalRendering/helloConditionalRendering'
     ),
     'c/eventWithData': path.resolve(
         basePath,
-        './force-app/main/default/lwc/eventWithData'
+        './force-app/main/default/lwc/eventWithData/eventWithData'
     ),
     'c/helloBinding': path.resolve(
         basePath,
-        './force-app/main/default/lwc/helloBinding'
+        './force-app/main/default/lwc/helloBinding/helloBinding'
     ),
     'c/helloForEach': path.resolve(
         basePath,
-        './force-app/main/default/lwc/helloForEach'
+        './force-app/main/default/lwc/helloForEach/helloForEach'
     ),
     'c/helloExpressions': path.resolve(
         basePath,
-        './force-app/main/default/lwc/helloExpressions'
+        './force-app/main/default/lwc/helloExpressions/helloExpressions'
+    ),
+    'c/miscDomQuery': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscDomQuery/miscDomQuery'
+    ),
+    'c/libsD3': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/libsD3/libsD3'
+    ),
+    'c/lmsSubscriberWebComponent': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/lmsSubscriberWebComponent/lmsSubscriberWebComponent'
+    ),
+    'c/lmsPublisherWebComponent': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/lmsPublisherWebComponent/lmsPublisherWebComponent'
+    ),
+    'c/libsFullCalendar': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/libsFullCalendar/libsFullCalendar'
+    ),
+    'c/miscContentAsset': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscContentAsset/miscContentAsset'
+    ),
+    'c/miscGetUserId': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscGetUserId/miscGetUserId'
+    ),
+    'c/miscModal': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscModal/miscModal'
+    ),
+    'c/miscMultipleTemplates': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscMultipleTemplates/miscMultipleTemplates'
+    ),
+    'c/miscNotification': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscNotification/miscNotification'
+    ),
+    'c/miscSharedJavaScript': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscSharedJavaScript/miscSharedJavaScript'
+    ),
+    'c/mortgage': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/mortgage/mortgage'
+    ),
+    'c/miscRestApiCall': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscRestApiCall/miscRestApiCall'
+    ),
+    'c/mortgage': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/mortgage/mortgage'
+    ),
+    'c/miscStaticResource': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/miscStaticResource/miscStaticResource'
+    ),
+    'c/modal': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/modal/modal'
+    ),
+    'c/navToFilesHome': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToFilesHome/navToFilesHome'
+    ),
+    'c/navToHelloTab': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToHelloTab/navToHelloTab'
+    ),
+    'c/navToChatterHome': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToChatterHome/navToChatterHome'
+    ),
+    'c/navToRecord': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToRecord/navToRecord'
+    ),
+    'c/navToListView': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToListView/navToListView'
+    ),
+    'c/navToNewRecord': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToNewRecord/navToNewRecord'
+    ),
+    'c/navToHome': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToHome/navToHome'
+    ),
+    'c/navToNewRecordWithDefaults': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToNewRecordWithDefaults/navToNewRecordWithDefaults'
+    ),
+    'c/navToRelatedList': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/navToRelatedList/navToRelatedList'
+    ),
+    'c/recordEditFormDynamicContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordEditFormDynamicContact/recordEditFormDynamicContact'
+    ),
+    'c/paginator': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/paginator/paginator'
+    ),
+    'c/recordViewFormDynamicContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordViewFormDynamicContact/recordViewFormDynamicContact'
+    ),
+    'c/recordEditFormStaticContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordEditFormStaticContact/recordEditFormStaticContact'
+    ),
+    'c/recordViewFormStaticContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordViewFormStaticContact/recordViewFormStaticContact'
+    ),
+    'c/recordFormStaticContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordFormStaticContact/recordFormStaticContact'
+    ),
+    'c/recordFormDynamicContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/recordFormDynamicContact/recordFormDynamicContact'
+    ),
+    'c/viewSource': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/viewSource/viewSource'
+    ),
+    'c/wireGetObjectInfo': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetObjectInfo/wireGetObjectInfo'
+    ),
+    'c/wireCurrentPageReference': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireCurrentPageReference/wireCurrentPageReference'
+    ),
+    'c/todoList': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/todoList/todoList'
+    ),
+    'c/wireGetRecordDynamicContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetRecordDynamicContact/wireGetRecordDynamicContact'
+    ),
+    'c/wireGetPicklistValues': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetPicklistValues/wireGetPicklistValues'
+    ),
+    'c/wireGetRecordStaticContact': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetRecordStaticContact/wireGetRecordStaticContact'
+    ),
+    'c/wireGetPicklistValuesByRecordType': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetPicklistValuesByRecordType/wireGetPicklistValuesByRecordType'
+    ),
+    'c/wireListView': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireListView/wireListView'
+    ),
+    'c/wireGetRecordUser': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/wireGetRecordUser/wireGetRecordUser'
+    ),
+    'c/eventSimple': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/eventSimple/eventSimple'
+    ),
+    'c/ldsDeleteRecord': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/ldsDeleteRecord/ldsDeleteRecord'
+    ),
+    'c/helloIterator': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/helloIterator/helloIterator'
+    ),
+    'c/lds': path.resolve(basePath, './force-app/main/default/lwc/lds/lds'),
+    'c/ldsGenerateRecordInputForCreate': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/ldsGenerateRecordInputForCreate/ldsGenerateRecordInputForCreate'
+    ),
+    'c/ldsCreateRecord': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/ldsCreateRecord/ldsCreateRecord'
+    ),
+    'c/ldsUtils': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/ldsUtils/ldsUtils'
+    ),
+    'c/libsChartjs': path.resolve(
+        basePath,
+        './force-app/main/default/lwc/libsChartjs/libsChartjs'
     ),
 
-    "'c/": `'${path.resolve(basePath, './force-app/main/default/lwc/')}`,
-    '@salesforce/apex': path.resolve(
-        basePath,
-        './force-app/test/jest-mocks/apex'
-    ),
+    // TODO: All of the original ones that are in jest.config.js
+    // '@salesforce/apex': path.resolve(
+    //     basePath,
+    //     './force-app/test/jest-mocks/apex'
+    // ),
     '@salesforce/schema': path.resolve(
         basePath,
         './force-app/test/jest-mocks/schema'
@@ -176,6 +383,97 @@ const bundleReplacements = {
         basePath,
         './force-app/test/jest-mocks/lightning/actions'
     ),
+
+    // All these ones I added the original file
+    'lightning/platformResourceLoader': path.resolve(
+        basePath,
+        './force-app/test/jest-mocks/lightning/platformResourceLoader'
+    ),
+    'lightning/pageReferenceUtils': path.resolve(
+        basePath,
+        './force-app/test/jest-mocks/lightning/pageReferenceUtils'
+    ),
+    'lightning/uiObjectInfoApi': path.resolve(
+        basePath,
+        './force-app/test/jest-mocks/lightning/uiObjectInfoApi'
+    ),
+    'lightning/uiListApi': path.resolve(
+        basePath,
+        './force-app/test/jest-mocks/lightning/uiListApi'
+    ),
+
+    // Added more of these but took them straight from node_modules instead of copy the file over
+    'lightning/button': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/button/button'
+    ),
+    'lightning/input': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/input/input'
+    ),
+    'lightning/formattedEmail': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/formattedEmail/formattedEmail'
+    ),
+    'lightning/card': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/card/card'
+    ),
+    'lightning/layoutItem': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/layoutItem/layoutItem'
+    ),
+    'lightning/formattedDateTime': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/formattedDateTime/formattedDateTime'
+    ),
+    'lightning/formattedPhone': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/formattedPhone/formattedPhone'
+    ),
+    'lightning/combobox': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/combobox/combobox'
+    ),
+    'lightning/messages': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/messages/messages'
+    ),
+    'lightning/recordForm': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/recordForm/recordForm'
+    ),
+    'lightning/outputField': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/outputField/outputField'
+    ),
+    'lightning/tree': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/tree/tree'
+    ),
+    'lightning/layout': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/layout/layout'
+    ),
+    'lightning/datatable': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/datatable/datatable'
+    ),
+    'lightning/formattedNumber': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/formattedNumber/formattedNumber'
+    ),
+    'lightning/buttonIcon': path.resolve(
+        basePath,
+        './node_modules/@salesforce/sfdx-lwc-jest/src/lightning-stubs/buttonIcon/buttonIcon'
+    ),
+
+    // Trying RegExp instead of the string
+    patter: path.resolve(
+        basePath,
+        './force-app/test/jest-mocks/lightning/apex'
+    ),
+
     objectGuards: true,
     preventAssignment: true
 };
@@ -200,25 +498,29 @@ module.exports = function (config) {
         files: [{ pattern, type: 'module', watched: true }],
 
         // list of files / patterns to exclude
+        // TODO: We had this excluded, but why?
         exclude: [
-            path.resolve(
-                basePath,
-                './force-app/main/default/lwc/editRecordScreenAction/__tests__/editRecordScreenAction.test.js'
-            )
+            // path.resolve(
+            //     basePath,
+            //     './force-app/main/default/lwc/editRecordScreenAction/__tests__/editRecordScreenAction.test.js'
+            // )
         ],
-
-        // preprocess matching files before serving them to the browser
-        // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
-        preprocessors: {
-            [pattern]: ['rollup']
-        },
 
         // custom preprocessor
         rollupPreprocessor: {
             preserveEntrySignatures: 'exports-only',
             treeshake: false,
+
+            // TODO: Pretty sure we don't need this
+            // testPathIgnorePatterns: ['./node_modules/', './test/specs/'],
+
             plugins: [
                 replaceRollupPlugin(bundleReplacements),
+                // replaceRollupPlugin({
+                //   include: bundleReplacements,
+                //   exclude: bundleIgnore,
+                //   preventAssignment: true,
+                // }),
                 nodeResolve({
                     preferBuiltins: true
                 }),
@@ -228,6 +530,20 @@ module.exports = function (config) {
                 format: 'es',
                 sourcemap: 'inline'
             }
+        },
+
+        // TODO: The jest.config.js has this included in it to avoid transforming lightning/*
+        // I think we might want something similar somewhere
+        // replaceRollupPlugin has an "exclude" option
+
+        //   transformIgnorePatterns: [
+        //     '/node_modules/(?!(.*@salesforce/sfdx-lwc-jest/src/lightning-stubs)/)',
+        //   ],
+
+        // preprocess matching files before serving them to the browser
+        // available preprocessors: https://www.npmjs.com/search?q=keywords:karma-preprocessor
+        preprocessors: {
+            [pattern]: ['rollup']
         },
 
         // test results reporter to use
