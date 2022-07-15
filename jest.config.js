@@ -2,7 +2,16 @@ const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
 const setupFilesAfterEnv = jestConfig.setupFilesAfterEnv || [];
 setupFilesAfterEnv.push('<rootDir>/jest-sa11y-setup.js');
 setupFilesAfterEnv.push('<rootDir>/jest-crypto-setup.js');
-module.exports = {
+
+const pattern = '^.+\\.(js|html|css)$';
+const transform = process.env.LWS
+    ? {
+          ...jestConfig.transform,
+          [pattern]: '<rootDir>/lws.transformer.js'
+      }
+    : jestConfig.transform;
+
+const config = {
     ...jestConfig,
 
     // A map from regular expressions to module names or to arrays of module names
@@ -30,17 +39,16 @@ module.exports = {
     setupFilesAfterEnv,
 
     // Default timeout of a test in milliseconds
-    testTimeout: 10000
-
-    // TODO: Need to figure out the expression that we want here -- what we want rolled up with jest
-
-    // TODO: Thinking maybe we move anything from this file that we added into rollup.config.js since we added the custom flag
+    testTimeout: 10000,
 
     // A map from regular expressions to paths to transformers.
-    // transform: {
-    //     '\\.js$': ['rollup-jest', { configFile: './rollup.config.js' }]
-    // }
-
-    // options:
-    // sourcemap, configFile, React, useCache, resolveImports, args, plugins
+    transform
 };
+
+if (process.env.LWS) {
+    config.setupFiles = ['<rootDir>/lws.setup.js'];
+}
+
+console.log(config);
+
+module.exports = config;

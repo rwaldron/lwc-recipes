@@ -7,7 +7,7 @@
         "lint": "eslint **/{lwc,aura}/**/*.js",
         "test": "npm run test:unit",
         "test:jest": "jest",
-        "test:locker": "node preJest.js --lockerOn=true",
+        "test:lws": "LWS=1 jest",
         "test:unit": "sfdx-lwc-jest --skipApiVersionCheck",
         "test:unit:watch": "sfdx-lwc-jest --watch --skipApiVersionCheck",
         "test:unit:debug": "sfdx-lwc-jest --debug --skipApiVersionCheck",
@@ -35,7 +35,10 @@
         "url": "git+https://github.com/trailheadapps/lwc-recipes"
     },
     "devDependencies": {
+        "@locker/near-membrane": "^0.4.0",
+        "@locker/near-membrane-dom": "^0.10.21",
         "@locker/rollup-plugin": "^0.16.17",
+        "@locker/sandbox": "^0.16.21-test.2",
         "@lwc/eslint-plugin-lwc": "^1.1.1",
         "@lwc/rollup-plugin": "2.20.0",
         "@prettier/plugin-xml": "^1.2.0",
